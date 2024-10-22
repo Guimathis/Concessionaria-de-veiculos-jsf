@@ -1,0 +1,19 @@
+.ui-widget,
+.ui-widget .ui-widget,
+.ui-widget .ui-wizard-step-title,
+.ui-widget td.label,
+.ui-widget td.value,
+.ui-widget label,
+table {
+    font-size: 12px !important;
+    color: #585858;
+    
+}
+
+
+.ui-panel {
+    margin-bottom: 10px;
+}
+.ui-widget td.label{
+    font-size: 20px;
+}

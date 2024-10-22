@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml">
+    <ui:define name="conteudo">
+        <h2>Cadastrar Clientes</h2>
+        <p:panel header="Clientes Cadastrados">  
+            <p:outputPanel id="cliente">
+                <p:dataTable id="dataTable" var="cliente"
+                             value="#{clienteBean.all}"
+                             widgetVar="tabelaClientes"
+                             emptyMessage="Nenhum registro encontrado"
+                             filteredValue="#{clienteBean.clientesFiltrados}">
+                    <p:column headerText="Nome" filterBy="nome" footerText="startsWith">  
+                        <h:outputText value="#{cliente.nome}" />  
+                    </p:column>
+                    <p:column headerText="Sobrenome" filterBy="sobrenome" footerText="startsWith">  
+                        <h:outputText value="#{cliente.sobrenome}" />  
+                    </p:column>
+                    <p:column filterBy="sexo"
+                              headerText="Sexo" footerText="exact"
+                              filterOptions="#{clienteBean.getSexo(true)}"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{cliente.sexo}" />
+                    </p:column>
+                    
+                    <p:column filterBy="estadoCivil"
+                              headerText="Estado Civil" footerText="exact"
+                              filterOptions="#{clienteBean.getEstadosCivis(true)}"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{cliente.estadoCivil}" />
+                    </p:column>
+                    
+                    <p:column headerText="Cidade" filterBy="cidade" footerText="startsWith">  
+                        <h:outputText value="#{cliente.cidade}" />  
+                    </p:column>
+                    <p:column headerText="Ação">  
+                        <p:commandButton value="Consutar"
+                                         actionListener="#{clienteBean.consultar(cliente)}"
+                                         oncomplete="panelCliente.show();"
+                                         update=":form:displayCliente" /> 
+                    </p:column>
+                </p:dataTable>
+                <p:panel>
+                    <p:commandButton value="Cadastrar"
+                                     actionListener="#{clienteBean.inserir()}"
+                                     oncomplete="panelCliente.show();"
+                                     update=":form:displayCliente" />   
+                </p:panel>
+            </p:outputPanel>
+        </p:panel>
+        <p:panel header="Dados do Cliente" id="dadosCliente" widgetVar="panelCliente"
+                 visible="false" closable="true" style="margin-top:10px;">
+            <p:messages id="erroCliente"/>
+            <h:panelGrid id="displayCliente" columns="1" styleClass="grid">
+                <p:panel>
+                    <p:wizard
+                        flowListener="#{clienteBean.onFlowProcess}"
+                        backLabel="Anterior"
+                        nextLabel="Proximo" >
+                        <p:tab id="dadosPessoais" title="1. Dados Pessoais">
+                            <p:panel header="Dados Pessoais">
+                                <h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+
+                                    <h:outputText value="Nome *" />
+                                    <p:inputText id="nomeInputText" required="false" label="Nome"
+                                                 value="#{clienteBean.value.nome}" styleClass="ipt-large" />
+                                    <p:message for="nomeInputText" />
+                                    <h:outputText value="Sobrenome *" />
+                                    <p:inputText id="sobrenomeInputText" required="false" label="Sobrenome"
+                                                 value="#{clienteBean.value.sobrenome}" styleClass="ipt-large" />
+                                    <p:message for="sobrenomeInputText" />
+                                    
+                                    <h:outputText value="CPF *" />
+                                    <p:inputMask id="cpfInputText" required="false" label="CPF"
+                                                 value="#{clienteBean.value.cpf}" styleClass="ipt-large" mask="999.999.999-99" />
+                                    <p:message for="cpfInputText" />
+                                    
+                                    <h:outputText value="Sexo *" />
+                                    <p:selectOneRadio id="sexoselectOneRadio"
+                                                      value="#{clienteBean.value.sexo}"
+                                                      required="false" label="Sexo" style="width:100px; border-bottom-right-radius: 10px">
+                                        <f:selectItems value="#{clienteBean.getSexo(false)}" />
+                                    </p:selectOneRadio>
+                                    <p:message for="sexoselectOneRadio" />
+                                    
+                                    
+                                    <h:outputText value="Estado Civil *" />
+                                    <p:selectOneMenu id="estadoCivilSelectOneMenu"
+                                                     value="#{clienteBean.value.estadoCivil}"
+                                                     required="false" label="Estado Civil" style="width:100px">
+                                        <f:selectItems value="#{clienteBean.getEstadosCivis(false)}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="estadoCivilSelectOneMenu" />
+                                    
+                                    
+                                    <h:outputText value="Data de Nascimento *" />
+                                    <p:inputMask id="dataNascimentoInputMask" required="false"
+                                                 label="Data de Nascimento" mask="99/99/9999"
+                                                 value="#{clienteBean.value.dataNascimento}">
+                                        <f:convertDateTime pattern="dd/mm/yyyy" locale="pt_BR"/>
+                                    </p:inputMask>
+                                    <p:message for="dataNascimentoInputMask" />
+                                    <h:outputText value="Cidade *" />
+                                    <p:inputText id="cidadeInputText" required="false" label="Cidade"
+                                                 value="#{clienteBean.value.cidade}" styleClass="ipt-large" />
+                                    <p:message for="cidadeInputText" />
+                                </h:panelGrid>  
+                            </p:panel>
+                        </p:tab>
+                        <p:tab id="contatos" title="2. Contatos">
+                            <p:panel header="Contatos">
+                                <h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+                                    <h:outputText value="Email: " />
+                                    <p:inputText id="emailInputText" required="false" label="Email"
+                                                 value="#{clienteBean.value.email}" styleClass="ipt-large" />
+                                    <p:message for="emailInputText" />
+                                    <h:outputText value="WhatsApp: " />
+                                    <p:inputText id="whatsappInputText" required="false" label="WhatsApp"
+                                                 value="#{clienteBean.value.whatsapp}" styleClass="ipt-large" />
+                                    <p:message for="whatsappInputText" />
+                                    <h:outputText value="Facebook: " />
+                                    <p:inputText id="facebooklInputText" required="false" label="Facebook"
+                                                 value="#{clienteBean.value.facebook}" styleClass="ipt-large" />
+                                    <p:message for="facebooklInputText" />
+                                    <h:outputText value="Instagram: " />
+                                    <p:inputText id="instagramInputText" required="false" label="Instagram"
+                                                 value="#{clienteBean.value.instagram}" styleClass="ipt-large" />
+                                    <p:message for="instagramInputText" />
+                                </h:panelGrid>  
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+                    <h:panelGroup rendered="#{!clienteBean.consultar}">
+                        <p:commandButton value="Inserir" action="#{clienteBean.save()}" ajax="false" icon="ui-icon-circle-plus"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{clienteBean.consultar}">
+                        <p:commandButton value="Alterar" action="#{clienteBean.update()}" ajax="false" icon="ui-icon-pencil"/>
+                        <p:commandButton value="Remover" action="#{clienteBean.delete()}" ajax="false" icon="ui-icon-circle-minus"  />
+                    </h:panelGroup>
+                </p:panel>
+            </h:panelGrid>  
+        </p:panel>
+    </ui:define>
+</ui:composition>

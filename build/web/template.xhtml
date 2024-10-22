@@ -1,0 +1,58 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Concessionária Veículos</title>
+            </f:facet>
+            <h:outputStylesheet library="css" name="default.css"/>
+            <h:outputStylesheet library="css" name="override.css"/>
+        </h:head>
+        <h:body>
+            <div style="margin: 0 auto;">
+                <h:form id="form">
+                    <p:layout fullPage="true" style="text-align:left; min-width:1020px;
+                              max-width:1020px; min-height:600px">
+                        <p:layoutUnit position="north" size="50" style="text-align:center;">
+                            <h1>Concessionária Veículos</h1>
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="south" size="50" style="text-align:center;">
+                            <br/><strong>LPIII - Aplicação Web</strong>
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="west" size="186">
+                            <p:menu>
+                                <p:menuitem value="Página Inicial" url="/index.jsf?faces-redirect=true"></p:menuitem>
+                            </p:menu>
+                            <p:menu>
+                                <p:submenu label="Clientes">
+                                    <p:menuitem value="Cadastrar Clientes" url="/cadastrarClientes.jsf?faces-redirect=true"/>
+                                </p:submenu>
+                                <p:submenu label="Veículos">
+                                    <p:menuitem value="Cadastrar Veiculos" url="/cadastrarVeiculos.jsf?faces-redirect=true"/>
+                                </p:submenu>
+                                <p:submenu label="Vendas">
+                                    <p:menuitem value="Cadastrar Vendas" url="/CadastrarVendas.jsf?faces-redirect=true" />
+
+                                </p:submenu>
+                            </p:menu>
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="center" style="padding: 10px;">
+                            <ui:insert name="conteudo"></ui:insert>
+                        </p:layoutUnit>
+                    </p:layout>
+                </h:form>
+            </div>                   
+        </h:body>
+
+    </f:view>
+</html>
+

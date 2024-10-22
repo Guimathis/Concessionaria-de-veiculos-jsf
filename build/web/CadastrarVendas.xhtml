@@ -1,0 +1,105 @@
+    
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml">
+    <ui:define name="conteudo">
+        <h2>Cadastrar Vendas</h2>
+        <p:panel header="Vendas Cadastradas">  
+            <p:outputPanel id="venda">
+                <p:dataTable id="dataTable" var="venda"
+                             value="#{vendaBean.all}"
+                             widgetVar="tabelaVendas"
+                             filteredValue="#{vendaBean.vendasFiltradas}" >       
+
+                    <p:column filterBy="cliente" headerText="Nome do cliente" footerText="startswith" class="tabelaColumns">
+                        <h:outputText value="#{venda.cliente.nomeSobrenome}" />
+                    </p:column>
+
+                    <p:column headerText="Data e Hora"  class="tabelaColumns">
+                        <h:outputText value="#{venda.dataHora}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column filterBy="formaPagamento"  class="tabelaColumns"
+                              headerText="Forma de pagamento" footerText="exact"
+                              filterOptions="#{vendaBean.getFormaPagamento(true)}"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{venda.formaPagamento.label}" />
+                    </p:column>
+
+                    <p:column filterBy="possuiGarantia"  class="tabelaColumns"
+                              headerText="Garantia" footerText="exact"
+                              filterOptions="#{vendaBean.getOptionsPossuiGarantia() }"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{ venda.possuiGarantia?'Sim': 'Não'}"/>
+                    </p:column>
+
+                    <p:column headerText="Ação" class="tabelaColumns" >  
+                        <p:commandButton value="Consutar"
+                                         actionListener="#{vendaBean.consultar(venda)}"
+                                         oncomplete="panelVenda.show();"
+                                         update=":form:displayVenda" /> 
+                    </p:column>
+                </p:dataTable>
+                <p:panel>
+                    <p:commandButton value="Cadastrar"
+                                     actionListener="#{vendaBean.inserir()}"
+                                     oncomplete="panelVenda.show();"
+                                     update=":form:displayVenda" />   
+                </p:panel>
+            </p:outputPanel>
+        </p:panel>
+        <p:panel header="Dados do Venda" id="dadosVenda" widgetVar="panelVenda" 
+                 visible="false" closable="true" style="margin-top:10px;">  
+            <p:messages id="erroVenda"/> 
+            <h:panelGrid id="displayVenda" columns="1" styleClass="grid">
+
+                <p:panel> 
+                    <h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">  
+
+                        <h:outputText value="Cliente *" />
+                        <p:autoComplete id="clienteAutoComplete" value="#{vendaBean.value.cliente}"
+                                        completeMethod="#{clienteBean.completaClientes}"
+                                        converter="#{clienteConverter}"
+                                        var="cliente" itemValue="#{cliente}" itemLabel="#{cliente}" />
+                        <p:message for="clienteAutoComplete" />
+
+                        <h:outputText value="Veiculos: *" />
+                        <p:autoComplete id="veiculoAutoComplete" value="#{vendaBean.value.veiculos}"
+                                        completeMethod="#{veiculoBean.completaVeiculos}" multiple="true"
+                                        converter="#{veiculoConverter}"
+                                        var="veiculo" itemValue="#{veiculo}" itemLabel="#{veiculo.modelo}" />
+                        <p:message for="veiculoAutoComplete" />
+
+                        <h:outputText value="Forma de pagamento *" />
+                        <p:selectOneMenu id="formaPagamentoSelectOneMenu"
+                                         value="#{vendaBean.value.formaPagamento}"
+                                         required="false" label="Forma de pagamento" style="width:100px">
+                            <f:selectItems value="#{vendaBean.getFormaPagamento(false)}" />
+                        </p:selectOneMenu>
+                        <p:message for="formaPagamentoSelectOneMenu" />
+
+                        <h:outputText value="Garantia *" />
+                        <p:selectBooleanCheckbox id="garantiaSelectBooleanCheckbox"
+                                                 value="#{vendaBean.value.possuiGarantia}"/>
+                        <p:message for="garantiaSelectBooleanCheckbox" />
+                    </h:panelGrid>  
+                </p:panel> 
+
+
+                <h:panelGroup rendered="#{!vendaBean.consultar}">
+                    <p:commandButton value="Inserir" action="#{vendaBean.save()}" ajax="false" icon="ui-icon-circle-plus"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{vendaBean.consultar}">
+                    <p:commandButton value="Alterar" action="#{vendaBean.update()}" ajax="false" icon="ui-icon-pencil"/>
+                    <p:commandButton value="Remover" action="#{vendaBean.delete()}" ajax="false" icon="ui-icon-circle-minus"/>
+                </h:panelGroup>
+            </h:panelGrid>  
+        </p:panel>  
+    </ui:define>
+</ui:composition>

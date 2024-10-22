@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template.xhtml">
+    <ui:define name="conteudo">
+        <h2>Cadastrar Veiculos</h2>
+        <p:panel header="Veiculos Cadastrados">  
+            <p:outputPanel id="veiculo">
+                <p:dataTable id="dataTable" var="veiculo"
+                             value="#{veiculoBean.all}"
+                             widgetVar="tabelaVeiculos"
+                             emptyMessage="Nenhum registro encontrado"
+                             filteredValue="#{veiculoBean.veiculosFiltrados}">
+
+
+                    <p:column headerText="Modelo" class="tabelaColumns" filterBy="modelo" footerText="startWith" >  
+                        <h:outputText value="#{veiculo.modelo}" />  
+                    </p:column>
+                    <p:column filterBy="estado"
+                              headerText="Estado" footerText="exact"
+                              filterOptions="#{veiculoBean.getEstado(true)}" 
+                              filterMatchMode="exact" class="tabelaColumns"> 
+                        <h:outputText value="#{veiculo.estado}" />
+                    </p:column>
+                    <p:column headerText="Tipo" class="tabelaColumns"
+                              filterBy="tipo"
+                              footerText="exact"
+                              filterOptions="#{veiculoBean.getTipos(true)}"
+                              filterMatchMode="exact">
+                        <h:outputText value="#{veiculo.tipo.label}"/>
+                    </p:column>
+                    <p:column headerText="Ação" class="tabelaColumns">  
+                        <p:commandButton value="Consutar"
+                                         actionListener="#{veiculoBean.consultar(veiculo)}"
+                                         oncomplete="panelVeiculo.show();"
+                                         update=":form:displayVeiculo" />  
+                    </p:column>
+                </p:dataTable>
+                <p:panel>
+                    <p:commandButton value="Cadastrar"
+                                     actionListener="#{veiculoBean.inserir()}"
+                                     oncomplete="panelVeiculo.show();"
+                                     update=":form:displayVeiculo" />   
+                </p:panel>
+            </p:outputPanel>
+        </p:panel>
+        <p:panel header="Dados da Veiculo" id="dadosVeiculo" widgetVar="panelVeiculo" 
+                 visible="false" closable="true" style="margin-top:10px;">  
+            <p:messages id="erroFilme"/> 
+            <h:panelGrid id="displayVeiculo" columns="1" styleClass="grid">
+                <p:panel> 
+                    <h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">  
+
+                        <h:outputText value="Modelo *" />
+                        <p:inputText id="modeloInputText" required="false" label="Modelo"
+                                     value="#{veiculoBean.value.modelo}" styleClass="ipt-large" />
+                        <p:message for="modeloInputText" />
+
+                        <h:outputText value="Estado *" />
+                        <p:selectOneRadio id="estadoSelectOneRadio"
+                                          value="#{veiculoBean.value.estado}"
+                                          required="false" label="Estado" style="width:100px">
+                            <f:selectItems value="#{veiculoBean.getEstado(false)}" />
+                        </p:selectOneRadio>
+                        <p:message for="estadoSelectOneRadio" />
+
+                        <h:outputText value="Tipo: *" />
+                        <p:selectOneMenu id="tipoSelectOneMenu"
+                                         value="#{veiculoBean.value.tipo}"
+                                         required="false" label="TipoVeiculo" style="width:120px">
+                            <f:selectItems value="#{veiculoBean.getTipos(false)}" />
+                        </p:selectOneMenu>
+                        <p:message for="tipoSelectOneMenu" />
+                    </h:panelGrid>  
+                </p:panel> 
+                <h:panelGroup rendered="#{!veiculoBean.consultar}">
+                    <p:commandButton value="Inserir" action="#{veiculoBean.save()}" ajax="false" icon="ui-icon-circle-plus"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{veiculoBean.consultar}">
+                    <p:commandButton value="Alterar" action="#{veiculoBean.update()}" ajax="false" icon="ui-icon-pencil"/>
+                    <p:commandButton value="Remover" action="#{veiculoBean.delete()}" ajax="false" icon="ui-icon-circle-minus"/>
+                </h:panelGroup>
+            </h:panelGrid>  
+        </p:panel>  
+    </ui:define>
+</ui:composition>
