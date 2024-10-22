@@ -23,7 +23,9 @@
 
     - Transparência para o desenvolvedor: O controle de threads e a comunicação entre o navegador e o servidor são automáticos, reduzindo a complexidade de desenvolvimento.
 
-    - Persistência com modelo objeto-relacional: A persistência de objetos em bancos de dados relacionais de forma automática, sem a necessidade de implementar comandos SQL.  
+    - Persistência com modelo objeto-relacional: A persistência de objetos em bancos de dados relacionais de forma automática, sem a necessidade de implementar comandos SQL.
+      
+    - Utilização do Servidor Wildfly para execução da aplicação web
   
 ## Tecnologies
 - **Frontend**:
@@ -41,6 +43,7 @@
 - **Tools**
 
    ![ApacheNetbeans](https://img.shields.io/badge/apache%20netbeans-1B6AC6?style=for-the-badge&logo=apache%20netbeans%20IDE&logoColor=white)
+  - Wildfly Server
 
 ## Screenshots 
 
