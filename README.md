@@ -6,44 +6,49 @@
 
 
 ## 🚀 Getting Started
-## About
-  <p>
-    <b>Este é um projeto criado utilizando JAVA para backend, Java Server Faces para criação de paginas web, com banco de dados MYSQL,
-    utilizando o modelo objeto-relacional gerando maior transparência no desenvolvimento. 
-    </b>
-  </p>
 
-  
-  - **Durante a criação deste projeto tive a oportunidade de aprender mais sobre**:
-    - Desacoplamento de layout e código: Com JSF, é possível separar o design das páginas web (em arquivos XHTML) do código Java que processa e armazena dados, facilitando a manutenção e organização do projeto.
+## Arquitetura Geral
+A arquitetura adotada é uma arquitetura em camadas baseada no Modelo-Visão-Controlador (MVC), implementada com as seguintes principais camadas:
 
-    - Componentes gráficos: O uso de bibliotecas de componentes visuais simplifica a criação de interfaces dinâmicas com tags customizáveis, associadas a parâmetros e estilos definidos em arquivos CSS, que     padronizam a apresentação das páginas.
+- **Camada de Apresentação (Frontend):**
+  - Desenvolvida com Java Server Faces (JSF) utilizando páginas XHTML.
+  - Responsável pela interface com o usuário, apresentando formulários, tabelas e componentes gráficos.
+  - Utiliza componentes visuais que simplificam a criação de interfaces dinâmicas e responsivas.
+  - Separa a lógica da apresentação do processamento de negócios, promovendo uma interface desacoplada.
 
-    - JavaBeans: O código Java é implementado em Beans, responsáveis por armazenar temporariamente os dados do usuário e processá-los ou enviá-los a um banco de dados.
+- **Camada de Negócio (Controle):**
+  - Implementada via Beans gerenciados pelo CDI (Contexts and Dependency Injection) e EJB (Enterprise JavaBeans).
+  - Encapsula a lógica de negócio, validações, e gerenciamento de entidades.
+  - Atua como controladores que interagem entre a interface e a camada de persistência.
 
-    - Transparência para o desenvolvedor: O controle de threads e a comunicação entre o navegador e o servidor são automáticos, reduzindo a complexidade de desenvolvimento.
+- **Camada de Persistência (Modelo):**
+  - Utiliza JPA (Java Persistence API) para mapeamento objeto-relacional.
+  - Gerencia entidades que representam tabelas do banco MySQL.
+  - Automatiza a execução de comandos SQL, proporcionando uma manipulação transparente dos dados.
 
-    - Persistência com modelo objeto-relacional: A persistência de objetos em bancos de dados relacionais de forma automática, sem a necessidade de implementar comandos SQL.
-      
-    - Utilização do Servidor Wildfly para execução da aplicação web
-  
-## Tecnologies
-- **Frontend**:
+- **Infraestrutura e Servidores:**
+  - A aplicação é hospedada em um servidor WildFly, que fornece o ambiente de execução para EJBs, CDI, JSF e JPA.
+  - O banco de dados MySQL armazena todas as informações de clientes, veículos e vendas, acessado através do JPA.
+
+## Tecnologias e Ferramentas
+- **Frontend:**
   - XHTML
-  - Java Server Pages
+  - JavaServer Faces (JSF)
+  - CSS para estilização
 
-- **Backend**:
+- **Backend:**
+  - Java SE 24
+  - Java EE 8 (com foco em JSF, EJB, CDI, JPA)
 
-    ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+- **Banco de Dados:**
+  - MySQL
 
-- **Database**:
+- **Servidores e Ferramentas:**
+  - WildFly Application Server
+  - Apache NetBeans IDE
 
-   ![MySQL]( https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
-
-- **Tools**
-
-   ![ApacheNetbeans](https://img.shields.io/badge/apache%20netbeans-1B6AC6?style=for-the-badge&logo=apache%20netbeans%20IDE&logoColor=white)
-  - Wildfly Server
+## Fluxo de Dados e Interações
+O fluxo típico de operações inicia na interface do usuário em JSF, que dispara ações controladas por seus Beans. Estes Beans, que servem como controladores, interagem com a camada de entidades e repositórios gerenciados pelo JPA para persistir ou recuperar dados do banco MySQL. A comunicação entre as camadas é feita de forma desacoplada, promovendo manutenção e evolução facilitadas.
 
 ## Screenshots 
 
